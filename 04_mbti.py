@@ -1,6 +1,4 @@
 import streamlit as st
-import plotly.express as px
-import random
 
 st.title("🔮 MBTI 판독기")
 
@@ -77,63 +75,3 @@ mbti_weaknesses = {
 }
 
 st.error(mbti_weaknesses[my_mbti])
-
-
-
-# 1) Gapminder 데이터셋 불러오기
-df = px.data.gapminder()
-
-st.title("🌍 Plotly 인터랙티브 예제: Gapminder (No Session State)")
-
-# 2) 슬라이더: 연도(year) 선택
-selected_year = st.slider(
-    "보고 싶은 연도 (Year)",
-    min_value=int(df["year"].min()),   # 1952
-    max_value=int(df["year"].max()),   # 2007
-    step=5,
-    value=1952
-)
-
-# 3) 버튼: 특정 대륙만 무작위로 선택
-random_continent = None
-if st.button("무작위 대륙만 보여주기"):
-    continents = df["continent"].unique().tolist()
-    random_continent = random.choice(continents)
-    st.write(f"무작위로 선택된 대륙: **{random_continent}**")
-
-# 4) 데이터 필터링
-#    - 선택된 연도에 해당하는 데이터만 추출
-filtered_df = df[df["year"] == selected_year]
-
-#    - 무작위 대륙이 있다면, 해당 대륙만 필터링
-if random_continent:
-    filtered_df = filtered_df[filtered_df["continent"] == random_continent]
-
-title_text = f"{selected_year}년 데이터"
-if random_continent:
-    title_text += f" (대륙: {random_continent})"
-else:
-    title_text += " (전체 대륙)"
-
-# 5) Plotly 차트 생성
-fig = px.scatter(
-    filtered_df,
-    x="gdpPercap",      # 1인당 GDP (로그 스케일로 보기 좋음)
-    y="lifeExp",        # 기대 수명
-    size="pop",         # 풍선 크기: 인구 수
-    color="continent",  # 색깔: 대륙
-    hover_name="country",
-    log_x=True,         # X축(1인당 GDP)을 로그 스케일
-    size_max=60,
-    title=f"Gapminder - {title_text}"
-)
-
-st.plotly_chart(fig, use_container_width=True)
-
-st.markdown("""
-**사용 안내**  
-1. **슬라이더**를 움직여 연도를 바꿔보세요.  
-2. **무작위 대륙만 보여주기** 버튼을 누르면, 해당 대륙 데이터만 필터링해 표시됩니다.  
-3. :red[Session State를 사용하지 않았기 때문에], 슬라이더를 다시 조정할 때마다  
-   무작위 대륙 선택은 **초기화**된다는 점에 유의하세요!
-""")
