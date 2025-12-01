@@ -1,0 +1,139 @@
+import streamlit as st
+import plotly.express as px
+import random
+
+st.title("🔮 MBTI 판독기")
+
+st.write("아래에서 네 가지 차원별로 당신은 어느 쪽에 더 가까운지 선택해보세요!")
+
+# 1) 에너지 방향 (I or E)
+energy = st.radio(
+    "에너지 방향 선택: I (내향) , E (외향)",
+    ("I", "E")
+)
+
+# 2) 인식 기능 (S or N)
+sensing = st.radio(
+    "인식 기능 선택: S (감각), N (직관)",
+    ("S", "N")
+)
+
+# 3) 판단 기능 (T or F)
+thinking = st.radio(
+    "판단 기능 선택: T (사고), F (감정)",
+    ("T", "F")
+)
+
+# 4) 생활 양식 (J or P)
+judging = st.radio(
+    "생활 양식 선택: J (판단), P (인식)",
+    ("J (판단)", "P (인식)")
+)
+
+# 선택값을 이어붙여 최종 MBTI 문자열 생성
+my_mbti = energy[0] + sensing[0] + thinking[0] + judging[0]
+st.subheader(f"당신의 MBTI 유형은... **{my_mbti}** !")
+
+mbti_descriptions = {
+    "ISTJ": "논리적이고 책임감 강한 집콕러! 은근히 웃긴 드립으로 주변을 놀라게 해줄 때가 있어요.",
+    "ISFJ": "따뜻하고 배려심 많은 힐링러! 무뚝뚝해 보여도 속은 마시멜로처럼 폭신폭신.",
+    "INFJ": "이상주의적 감성러! 가끔 세계 평화를 꿈꾸면서 티 한 잔으로 힐링하곤 합니다.",
+    "INTJ": "분석적이고 독립적인 전략가! 남들 눈치 안 보고, 자기 길을 똑부러지게 가죠.",
+    "ISTP": "즉흥적이고 손재주 좋은 똑쟁이! 뜯어보고, 고치고, 만드는 걸 좋아해요.",
+    "ISFP": "감성적이고 온화한 예술가! 말보단 그림, 사진, 음악으로 마음을 표현해요.",
+    "INFP": "공감 능력 최강인 몽상가! 상상 속 나라에서 휴가 보내는 걸 좋아할지도?",
+    "INTP": "지적인 호기심에 불타는 아이디어 뱅크! 답정너 대화는 질색이랍니다.",
+    "ESTP": "신나는 모험을 즐기는 분위기 메이커! 즉흥 여행이나 파티에 최적화된 타입.",
+    "ESFP": "파티의 주인공, 천상 연예인! 밝은 에너지가 주변 사람들에게 전염됩니다.",
+    "ENFP": "열정이 펄펄 끓는 창의적 아이디어 뱅크! 집콕은 상상만 해도 기운 빠질지도?",
+    "ENTP": "논쟁을 즐기는 발명가! 말싸움보다 토론(?)을 좋아하는, 날카로운 사고력의 소유자.",
+    "ESTJ": "조직적이고 추진력 있는 리더! BUT 예상 못 한 일정 변경엔 식겁할 수도 있죠.",
+    "ESFJ": "사교적이고 섬세한 케어왕! 사람 사이의 균형을 맞추는 데 타고난 능력이 있어요.",
+    "ENFJ": "타인의 성장을 돕고 싶은 열정가! 흥이 오르면 파티 주최자가 되어버리기도!",
+    "ENTJ": "결단력 있고 카리스마 넘치는 CEO형! 맡은 바를 모조리 해결해야 직성이 풀려요."
+}
+
+
+st.info(mbti_descriptions[my_mbti])
+
+# MBTI 단점(주의할 점) 예시
+mbti_weaknesses = {
+    "ISTJ": "융통성이 부족할 때가 있고, 변화에 대한 거부감이 있을 수 있습니다.",
+    "ISFJ": "자기주장을 잘 못해서 스트레스를 쌓아두기 쉽습니다.",
+    "INFJ": "지나치게 이상주의적이라 현실과 타협이 어려울 수 있습니다.",
+    "INTJ": "독립적이지만 때로는 고집이 세고 대인관계 스킬이 부족할 때가 있어요.",
+    "ISTP": "감정표현이 서툴러 주변 사람들이 속마음을 알기 어려울 수 있습니다.",
+    "ISFP": "자신만의 공간을 지나치게 중시하여 협업이 어려울 수 있습니다.",
+    "INFP": "현실적 문제를 회피하고, 상상 속에만 머무를 때가 있습니다.",
+    "INTP": "지적 논쟁을 좋아하지만, 공감 능력이 부족해 보일 수 있습니다.",
+    "ESTP": "충동적이고 계획 없이 움직여서 주변을 당황하게 만들 수 있어요.",
+    "ESFP": "지나치게 즉흥적이라 장기적 계획이나 목표 설정이 어려울 수 있습니다.",
+    "ENFP": "한 가지에 집중하기보다는 너무 많은 아이디어만 내놓고 끝낼 수 있습니다.",
+    "ENTP": "논쟁을 즐겨서 상대를 피곤하게 만들거나 감정 상하게 할 수 있어요.",
+    "ESTJ": "과도한 통제력을 발휘하려 할 수 있고, 융통성이 떨어질 수 있어요.",
+    "ESFJ": "타인의 평가에 예민해져서 자신을 지나치게 희생할 수 있습니다.",
+    "ENFJ": "과도한 책임감에 스스로를 몰아세우고 지쳐버릴 때가 있어요.",
+    "ENTJ": "때로는 권위적이고 독단적으로 보일 수 있으며 완벽주의 경향이 있습니다."
+}
+
+st.error(mbti_weaknesses[my_mbti])
+
+
+
+# 1) Gapminder 데이터셋 불러오기
+df = px.data.gapminder()
+
+st.title("🌍 Plotly 인터랙티브 예제: Gapminder (No Session State)")
+
+# 2) 슬라이더: 연도(year) 선택
+selected_year = st.slider(
+    "보고 싶은 연도 (Year)",
+    min_value=int(df["year"].min()),   # 1952
+    max_value=int(df["year"].max()),   # 2007
+    step=5,
+    value=1952
+)
+
+# 3) 버튼: 특정 대륙만 무작위로 선택
+random_continent = None
+if st.button("무작위 대륙만 보여주기"):
+    continents = df["continent"].unique().tolist()
+    random_continent = random.choice(continents)
+    st.write(f"무작위로 선택된 대륙: **{random_continent}**")
+
+# 4) 데이터 필터링
+#    - 선택된 연도에 해당하는 데이터만 추출
+filtered_df = df[df["year"] == selected_year]
+
+#    - 무작위 대륙이 있다면, 해당 대륙만 필터링
+if random_continent:
+    filtered_df = filtered_df[filtered_df["continent"] == random_continent]
+
+title_text = f"{selected_year}년 데이터"
+if random_continent:
+    title_text += f" (대륙: {random_continent})"
+else:
+    title_text += " (전체 대륙)"
+
+# 5) Plotly 차트 생성
+fig = px.scatter(
+    filtered_df,
+    x="gdpPercap",      # 1인당 GDP (로그 스케일로 보기 좋음)
+    y="lifeExp",        # 기대 수명
+    size="pop",         # 풍선 크기: 인구 수
+    color="continent",  # 색깔: 대륙
+    hover_name="country",
+    log_x=True,         # X축(1인당 GDP)을 로그 스케일
+    size_max=60,
+    title=f"Gapminder - {title_text}"
+)
+
+st.plotly_chart(fig, use_container_width=True)
+
+st.markdown("""
+**사용 안내**  
+1. **슬라이더**를 움직여 연도를 바꿔보세요.  
+2. **무작위 대륙만 보여주기** 버튼을 누르면, 해당 대륙 데이터만 필터링해 표시됩니다.  
+3. :red[Session State를 사용하지 않았기 때문에], 슬라이더를 다시 조정할 때마다  
+   무작위 대륙 선택은 **초기화**된다는 점에 유의하세요!
+""")
